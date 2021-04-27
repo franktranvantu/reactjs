@@ -7,13 +7,21 @@ export default function StudentList() {
 
   useEffect(async () => {
     const response = await fetch('/jdbc/students');
-    const data = await response.json();
-    console.log(data);
+    const students = await response.json();
+    setStudents(students)
   }, []);
 
-  const body = students.map(student => {
+  const headers = ['Id', 'Name', 'Email', 'Birthday'];
+
+  const tableHeaders = headers.map(header => {
     return (
-      <tr>
+      <th key={header}>{header}</th>
+    );
+  })
+
+  const tableBody = students.map(student => {
+    return (
+      <tr key={student.id}>
         <td>{student.id}</td>
         <td>{student.name}</td>
         <td>{student.email}</td>
@@ -32,7 +40,14 @@ export default function StudentList() {
           </Card.Header>
           <Card.Body>
             <Table responsive>
-              {body}
+              <thead>
+                <tr>
+                  {tableHeaders}
+                </tr>
+              </thead>
+              <tbody>
+                {tableBody}
+              </tbody>
             </Table>
           </Card.Body>
         </Card>
