@@ -1,27 +1,15 @@
-import {Card, Col, Form, FormLabel, Row, Table} from "react-bootstrap";
-import './Student.css';
+import {Card, Col, Row, Table} from "react-bootstrap";
+import {useEffect, useState} from "react";
 
-function StudentList() {
-  const students = [
-    {
-      id: 1,
-      name: 'Frank',
-      email: 'frank@gmail.com',
-      dob: '1992-09-12'
-    },
-    {
-      id: 2,
-      name: 'Henry',
-      email: 'henry@gmail.com',
-      dob: '1992-09-12'
-    },
-    {
-      id: 3,
-      name: 'Bean',
-      email: 'bean@gmail.com',
-      dob: '1992-09-12'
-    }
-  ];
+export default function StudentList() {
+
+  const [students, setStudents] = useState([]);
+
+  useEffect(async () => {
+    const response = await fetch('/jdbc/students');
+    const data = await response.json();
+    console.log(data);
+  }, []);
 
   const body = students.map(student => {
     return (
@@ -34,24 +22,6 @@ function StudentList() {
     );
   });
 
-  const styles = {
-    dropDownMenu: {
-      maxHeight: '173px',
-      overflow: 'hidden',
-      minHeight: '110px',
-      position: 'absolute',
-      willChange: 'transform',
-      top: '0px',
-      left: '0px',
-      transform: 'translate3d(0px, 36px, 0px)',
-      show: {
-        maxHeight: '155px',
-        overflowY: 'auto',
-        minHeight: '92px'
-      }
-    }
-  }
-
   return (
     <Row>
       <Col>
@@ -61,22 +31,8 @@ function StudentList() {
             <a href="#" className="btn btn-primary">+ Add new</a>
           </Card.Header>
           <Card.Body>
-            <Row>
-              <Col>
-                <Form.Label>
-                  Show
-                  <Form.Control as="select">
-                    <option>1</option>
-                    <option>1</option>
-                    <option>1</option>
-                    <option>1</option>
-                  </Form.Control>
-                  entries
-                </Form.Label>
-              </Col>
-            </Row>
             <Table responsive>
-
+              {body}
             </Table>
           </Card.Body>
         </Card>
@@ -84,5 +40,3 @@ function StudentList() {
     </Row>
   );
 }
-
-export default StudentList;
